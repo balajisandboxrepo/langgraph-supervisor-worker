@@ -155,12 +155,31 @@ Maintains the execution state passed between nodes in the LangGraph workflow:
 
 ## ⚙️ Configuration
 
-Create a `.env` file in the root directory (or update environmental variables) to supply OpenAI API credentials:
+### OpenAI API Setup (For Supervisor Agent)
+
+The **Supervisor Agent uses OpenAI LLM** for intelligent request routing and response consolidation. Create a `.env` file in the root directory with your OpenAI credentials:
+
 ```env
-OPENAI_API_KEY=your-api-key-here
+# Required: OpenAI API Key for Supervisor Agent
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Optional: Specify the model (defaults to gpt-4o-mini if not set)
+OPENAI_MODEL=gpt-4o-mini
 SUPERVISOR_MODEL=gpt-4o-mini
 ```
-*Note: If no API key is specified, the application seamlessly activates deterministic routing and consolidation, ensuring full operational capability without cloud network dependencies.*
+
+**How it works:**
+- **Routing Phase**: The Supervisor analyzes the user request and file type using OpenAI's LLM to intelligently route to the appropriate worker (Document Extraction or Object Detection).
+- **Consolidation Phase**: After a worker completes its task, the Supervisor uses OpenAI's LLM to synthesize the findings into a coherent final response.
+
+**Fallback Behavior:** If no API key is specified, the application seamlessly activates deterministic routing and consolidation using keyword-based rules, ensuring full operational capability without cloud dependencies.
+
+### Environment Variables Reference
+| Variable | Required | Default | Purpose |
+|----------|----------|---------|---------|
+| `OPENAI_API_KEY` | Yes (for LLM routing) | - | OpenAI API authentication key |
+| `OPENAI_MODEL` | No | `gpt-4o-mini` | Model for general LLM operations |
+| `SUPERVISOR_MODEL` | No | `gpt-4o-mini` | Specific model for supervisor routing/consolidation |
 
 ---
 
