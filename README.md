@@ -65,11 +65,11 @@ sequenceDiagram
     App->>Router: route_request(state)
     Note over Router: LLM or Fallback reasons over<br/>request & routes task
     alt route == "document_extraction"
-        Router--5>>DocWorker: Transition to Document Worker
+        Router-->>DocWorker: Transition to Document Worker
         DocWorker->>DocWorker: extract(state) via QwenVisionTool
         DocWorker-->>Consolidator: Transition to Consolidator
     else route == "object_detection"
-        Router--5>>DetWorker: Transition to Object Detection Worker
+        Router-->>DetWorker: Transition to Object Detection Worker
         DetWorker->>DetWorker: detect(state) via YoloObjectDetectionTool
         DetWorker-->>Consolidator: Transition to Consolidator
     end
